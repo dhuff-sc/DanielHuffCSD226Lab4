@@ -58,7 +58,7 @@ public class ApplicationSecurity {
 //                .logout((logout) -> logout.permitAll());
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/test_form.html","/test_form","/auth/login", "/publiccontent", "/login",  "/signup", "/", "index.html", "/about").permitAll()
+                        .requestMatchers("/test_form.html","/test_form","/auth/login", "/publiccontent", "/login",  "/signup", "/", "index.html", "/about", "/auth/refreshtoken").permitAll()
                         .requestMatchers(HttpMethod.GET, "/publiccontent").permitAll()
                         .requestMatchers(HttpMethod.POST, "/publiccontent").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/publiccontent").authenticated()

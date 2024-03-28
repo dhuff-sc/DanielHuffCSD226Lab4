@@ -3,6 +3,7 @@ package csd226.lab2.controllers;
 import csd226.lab2.data.Account;
 import csd226.lab2.repositories.AccountRepository;
 import csd226.lab2.security.JwtTokenUtil;
+import csd226.lab2.security.RefreshTokenUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class AccountController {
     @Autowired
     JwtTokenUtil jwtUtil;
 
+    @Autowired
+    RefreshTokenUtil refreshTokenUtil;
+
     @PostMapping("/test_form")
     public String test_form(@ModelAttribute Account account, Model model) {
         model.addAttribute("email", account);
@@ -45,14 +49,39 @@ public class AccountController {
 
             Account account = (Account) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(account);
+            RefreshToken refreshToken = refreshTokenUtil.createRefreshToken(account.getId());
 
-            AuthResponse response = new AuthResponse(account.getEmail(), accessToken);
+            AuthResponse response = new AuthResponse(account.getEmail(), accessToken, refreshToken.getToken());
 
             return ResponseEntity.ok().body(response + "<script>alert('setting var \\\"accessToken\\\"');var accessToken='" + accessToken + "';</script>");
         } catch( Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @PostMapping("/auth/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        try {
+            RefreshToken refreshToken = refreshTokenUtil.findByToken(requestRefreshToken);
+
+            if (refreshToken != null) {
+                if (refreshTokenUtil.verifyExpiration(refreshToken)) {
+                    Account account = accountRepository.getById(refreshToken.getAccount().getId());
+                    String token = jwtUtil.generateAccessToken(account);
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                } else {
+                    throw new Exception("RefreshTokenExpired");
+                }
+            }
+        } catch(Exception ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 
 
     @GetMapping("/login")

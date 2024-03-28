@@ -1,22 +1,12 @@
 package csd226.lab2.data;
 
-public class AuthResponse {
-    private String email;
+public class TokenRefreshResponse {
     private String accessToken;
     private String refreshToken;
 
-    public AuthResponse(String email, String accessToken, String refreshToken) {
-        this.email = email;
+    public TokenRefreshResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getAccessToken() {
