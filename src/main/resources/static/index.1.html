@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+</head>
+<body>
+<div hx-get="/protectedPage" hx-target="#protectedContent">
+    Get protected content
+</div>
+<div id="protectedContent"></div>
+
+<div hx-get="/publiccontent" hx-target="#content">
+    Get content
+</div>
+<div id="content"></div>
+</body>
+</html>
