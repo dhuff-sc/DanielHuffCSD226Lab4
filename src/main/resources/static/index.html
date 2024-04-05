@@ -129,6 +129,29 @@
             evt.detail.headers["Authorization"] = "Bearer " + accessToken;
             localStorage.setItem("accessToken", accessToken);
         });
+
+        // document.body.addEventListener('htmx:afterOnLoad', function (event) {
+        //     if (event.detail.xhr.status === 401 && refreshToken != "garbageToken") {
+        //         fetch('/auth/refreshtoken', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': 'Bearer ' + localStorage.getItem('refreshToken')
+        //             }
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 if (data.accessToken) {
+        //                     localStorage.setItem('accessToken', data.accessToken);
+        //
+        //                     htmx.trigger(event.target, 'refresh');
+        //                 }
+        //             })
+        //             .catch(error => console.error('Error:', error));
+        //     }
+        // });
+
+
     </script>
 
 </body>
