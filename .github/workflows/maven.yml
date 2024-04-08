@@ -32,7 +32,7 @@ jobs:
     - name: Build and push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: dhuffsc/CSD226Bookstore
+        image: dhuffsc/csd226bookstore
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
